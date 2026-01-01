@@ -1,0 +1,27 @@
+# Unity generated files
+/[Ll]ibrary/
+/[Tt]emp/
+/Obj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# OS generated files
+.DS_Store
+*.swp
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+*.sln.iml
+
+# Import settings
+/[Aa]ssets/**/Gizmos/
+
+# Keep track of large binary assets separately
+Assets/Models/

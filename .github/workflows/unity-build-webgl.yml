@@ -1,0 +1,52 @@
+name: Unity Build (WebGL Demo)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build-webgl:
+    name: Build and Publish WebGL Demo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Unity tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          unityVersion: 2021.3.30f1
+          testMode: all
+          testResultsPath: TestResults
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Build WebGL
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2021.3.30f1
+          targetPlatform: WebGL
+          buildName: WebGL
+          buildPath: build/WebGL
+          scenes: Assets/Scenes/PrototypeScene.unity
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: build/WebGL
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: build-webgl
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Deploy Pages
+        uses: actions/deploy-pages@v1
